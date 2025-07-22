@@ -1,112 +1,247 @@
+ **comprehensive Linked List Patterns**
 
-## **Linked List Patterns**
 
-### **Pattern 1: Basics (Traversal & Building)**
 
-* Learn to **create, traverse, and delete** nodes.
+### **1. Traversal & Basic Operations**
 
-1. Implement Singly Linked List (Insert, Delete, Print).
-2. Implement Doubly Linked List.
-3. Implement Circular Linked List.
+**Concept:** Building, traversing, inserting, deleting.
 
----
+**Template:**
 
-### **Pattern 2: Reversal Variations**
+```java
+// Traversal
+ListNode curr = head;
+while(curr != null){
+    // process curr.val
+    curr = curr.next;
+}
 
-Master reversal — the most common interview pattern.
-4\. Reverse a Linked List (Iterative).
-5\. Reverse a Linked List (Recursive).
-6\. Reverse a Doubly Linked List.
-7\. Reverse a Sublist (Between m and n).
-8\. Reverse in Groups of k.
-9\. Reverse Nodes Alternately.
+// Insert at head
+ListNode node = new ListNode(val);
+node.next = head;
+head = node;
 
----
+// Delete by value
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+ListNode prev = dummy;
+while(prev.next != null){
+    if(prev.next.val == target) prev.next = prev.next.next;
+    else prev = prev.next;
+}
+return dummy.next;
+```
 
-### **Pattern 3: Fast & Slow Pointers (Cycle + Middle)**
+**Practice:**
 
-Classic technique for **cycle detection, middle finding**.
-10\. Detect Cycle.
-11\. Find Cycle Start Node.
-12\. Length of Cycle.
-13\. Find Middle of List (Odd/Even).
-14\. Delete Middle Node.
-15\. Check Palindrome (using slow/fast & reverse half).
-
----
-
-### **Pattern 4: Merge & Sorting**
-
-All problems where lists are combined or sorted.
-16\. Merge Two Sorted Lists.
-17\. Merge K Sorted Lists (Heap).
-18\. Sort List (Merge Sort).
-19\. Insertion Sort List.
-20\. Partition List around a value x.
+* Implement singly, doubly, circular LL.
+* Print, insert, delete.
 
 ---
 
-### **Pattern 5: Two-Pointer Tricks**
+### **2. Reversal Variations**
 
-Common in interview puzzles.
-21\. Remove Nth Node from End.
-22\. Intersection of Two Lists.
-23\. Add Two Numbers (carry handling).
-24\. Add Two Numbers II (without reversing).
-25\. Split Linked List into Parts.
+**Concept:** Most-used interview base. Handle full list, sublists, groups.
 
----
+**Template (Iterative):**
 
-### **Pattern 6: Dummy Node Usage**
+```java
+ListNode prev = null, curr = head;
+while(curr != null){
+    ListNode next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+}
+return prev;
+```
 
-Learn to use a dummy node to simplify pointer management.
-26\. Remove Elements (all occurrences).
-27\. Remove Duplicates from Sorted List.
-28\. Remove Duplicates from Sorted List II.
-29\. Odd-Even Linked List.
-30\. Swap Nodes in Pairs.
+**Sublist / k-group:** Use dummy + reverse helper for \[m,n] or every k nodes.
 
----
+**Practice:**
 
-### **Pattern 7: Backtracking with Linked List**
-
-Rare but seen in advanced coding rounds.
-31\. Generate all permutations stored as linked lists.
-32\. Reverse Linked List to produce all possible paths in recursion.
+* Reverse full list (iterative/recursive)
+* Reverse in groups of k
+* Reverse sublist (m, n)
 
 ---
 
-### **Pattern 8: Multilevel & Advanced Structures**
+### **3. Fast & Slow Pointers**
 
-Covers uncommon but tough ones.
-33\. Flatten a Multilevel Doubly Linked List.
-34\. Copy List with Random Pointer.
-35\. Clone a Linked List with Random/Arbitrary Pointers (without extra space).
+**Concept:** Detect cycles, find middle, palindrome.
+
+**Template:**
+
+```java
+// Find middle
+ListNode slow = head, fast = head;
+while(fast != null && fast.next != null){
+    slow = slow.next;
+    fast = fast.next.next;
+}
+// slow = middle
+
+// Detect cycle
+while(fast != null && fast.next != null){
+    slow = slow.next;
+    fast = fast.next.next;
+    if(slow == fast) return true;
+}
+```
+
+**Practice:**
+
+* Detect cycle & find cycle start.
+* Find middle node (even/odd).
+* Palindrome check (reverse second half).
 
 ---
 
-### **Pattern 9: Stack + Linked List Combo**
+### **4. Merge & Sorting**
 
-Stack technique appears in some problems.
-36\. Next Greater Node in Linked List.
-37\. Add Two Numbers (stack approach).
-38\. Remove Nodes Greater than Right Side (Monotonic stack).
+**Concept:** Combining and sorting LL efficiently.
+
+**Template (Merge Two):**
+
+```java
+ListNode dummy = new ListNode(0), tail = dummy;
+while(l1 != null && l2 != null){
+    if(l1.val < l2.val){ tail.next = l1; l1 = l1.next; }
+    else { tail.next = l2; l2 = l2.next; }
+    tail = tail.next;
+}
+tail.next = (l1 != null) ? l1 : l2;
+return dummy.next;
+```
+
+**Practice:**
+
+* Merge 2 or K sorted lists (heap).
+* Sort list (merge sort).
 
 ---
 
-### **Pattern 10: Advanced Practice (Hard/Edge Cases)**
+### **5. Two-Pointer Tricks**
 
-39. Reverse Nodes in K-Group (hard variant).
-40. LFU/LRU Cache (requires doubly linked list + hashmap).
-41. Rotate List.
-42. Delete Duplicates (unsorted list).
-43. Linked List Components (count groups).
+**Concept:** Gap method (nth from end, intersections).
+
+**Template (Nth from end):**
+
+```java
+ListNode fast = head, slow = head;
+for(int i=0;i<n;i++) fast = fast.next;
+while(fast != null){
+    fast = fast.next;
+    slow = slow.next;
+}
+// slow is (len-n)th node
+```
+
+**Practice:**
+
+* Remove nth node.
+* Find intersection.
+* Add numbers (forward/backward).
 
 ---
 
+### **6. Dummy Node Pattern**
 
-### **How to Practice (Daily Plan to Hit 100):**
+**Concept:** Simplifies edge-case handling (head changes).
 
-1. Do **5–7 patterns per day** (with variations) → \~15 problems/day.
-2. By **Day 7**, you’ll cover all **patterns + 100 problems solved**.
-3. Revisit the **tricky ones (like k-group, LFU cache)** on Day 7.
+**Template:**
+
+```java
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+ListNode prev = dummy;
+while(head != null){
+    if(head.val == target) prev.next = head.next;
+    else prev = head;
+    head = head.next;
+}
+return dummy.next;
+```
+
+**Practice:**
+
+* Remove duplicates (sorted).
+* Swap nodes in pairs.
+* Odd-even list.
+
+---
+
+### **7. Backtracking + LL**
+
+**Concept:** Rare (used for generating permutations/paths).
+
+**Template:**
+Use recursion to build paths, revert state (like DFS).
+
+**Practice:**
+
+* Generate permutations stored as LL.
+* Recursively reverse with paths.
+
+---
+
+### **8. Multilevel & Advanced**
+
+**Concept:** Non-standard LL (random pointers, flattening).
+
+**Template (Clone with map):**
+
+```java
+Map<Node, Node> map = new HashMap<>();
+Node curr = head;
+while(curr != null){
+    map.put(curr, new Node(curr.val));
+    curr = curr.next;
+}
+curr = head;
+while(curr != null){
+    map.get(curr).next = map.get(curr.next);
+    map.get(curr).random = map.get(curr.random);
+    curr = curr.next;
+}
+return map.get(head);
+```
+
+**Practice:**
+
+* Flatten multilevel DLL.
+* Clone with random pointers.
+
+---
+
+### **9. Stack + LL Combo**
+
+**Concept:** Handle next-greater, reverse order sums.
+
+**Template:**
+
+```java
+Stack<Integer> st = new Stack<>();
+int[] res = new int[size];
+for(int i=size-1;i>=0;i--){
+    while(!st.isEmpty() && st.peek() <= arr[i]) st.pop();
+    res[i] = st.isEmpty()?0:st.peek();
+    st.push(arr[i]);
+}
+```
+
+**Practice:**
+
+* Next greater node.
+* Remove nodes greater than right.
+
+---
+
+### **10. Advanced (Hard Cases)**
+
+**Concept:** Combines multiple patterns.
+
+* Reverse K-group (dummy + reversal + counting).
+* LRU Cache (DLL + HashMap).
+* Rotate List (find new head using length).
+
